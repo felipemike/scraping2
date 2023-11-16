@@ -1,16 +1,37 @@
-// Importação das dependências necessárias para o servidor
 const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const path = require('path');
 
-// Criação da instância do aplicativo Express e definição da porta
 const app = express();
 const port = 3000;
 
 // Rota principal para servir o arquivo HTML
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Rota para manipular a solicitação de pesquisa
+app.get('/search/:keyword/:asin', async (req, res) => {
+  try {
+    // Obtém os parâmetros da solicitação
+    const { keyword, asin } = req.params;
+
+    // Validação de entrada
+    if (!keyword || !asin) {
+      throw new Error('Missing required parameters');
+    }
+
+    // Chama a função assíncrona para obter a posição do produto
+    const position = await getPositionOnAmazon(keyword, asin);
+
+    // Retorna a posição como resposta JSON
+    res.json({ position });
+  } catch (error) {
+    console.error(`Search request failed: ${error.message}`);
+    // Retorna um erro interno do servidor com uma mensagem amigável ao cliente
+    res.status(500).json({ error: 'Failed to process the search request.' });
+  }
 });
 
 // Função assíncrona para obter a posição de um produto na pesquisa da Amazon
@@ -70,24 +91,6 @@ function findPositionByAsin($, targetAsin) {
 
   return position;
 }
-
-// Rota para manipular a solicitação de pesquisa
-app.get('/search/:keyword/:asin', async (req, res) => {
-  try {
-    // Obtém os parâmetros da solicitação
-    const { keyword, asin } = req.params;
-    
-    // Chama a função assíncrona para obter a posição do produto
-    const position = await getPositionOnAmazon(keyword, asin);
-    
-    // Retorna a posição como resposta JSON
-    res.json({ position });
-  } catch (error) {
-    console.error(`Search request failed: ${error.message}`);
-    // Retorna um erro interno do servidor com uma mensagem amigável ao cliente
-    res.status(500).json({ error: 'Failed to process the search request.' });
-  }
-});
 
 // Inicia o servidor na porta especificada
 app.listen(port, () => {
