@@ -22,7 +22,7 @@ Após a configuração, você pode executar o aplicativo da seguinte maneira:
 3. Preencha o ASIN e a palavra-chave de pesquisa no formulário.
 ex: ASIN: B0C9GLR7YF   Palavra-chave de pesquisa: laptop
 
-4. Preencha o ASIN e a palavra-chave de pesquisa no formulário.
+4. A posição do produto irá aparecer no resultado.
 
 ## Tecnologias Utilizadas
 
@@ -60,7 +60,7 @@ After the setup, you can run the application as follows:
 2. Open your web browser and navigate to [http://localhost:3000](http://localhost:3000).
 3. Fill in the ASIN and search keyword in the form.
    - For example, ASIN: B0C9GLR7YF   Search keyword: laptop
-4. Submit the form to get the product's position in the Amazon search.
+4. The product position will appear in the result.
 
 ## Technologies Used
 
